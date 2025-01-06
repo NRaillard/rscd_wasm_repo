@@ -2,19 +2,21 @@ name: Run R Script and Save Artifact
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
+
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-    
+
     steps:
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       # Build the local R package and structure the CRAN repository
       - name: Build Wasm R packages
         uses: r-wasm/actions/build-rwasm@v2
@@ -26,18 +28,18 @@ jobs:
             openair
             hexbin
           repo-path: "_site"
-          
 
+      # Upload wasm image to release
       - name: Upload wasm image to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: "vfs/*"
-          tag: ${{ github.ref }}
+          tag: ${{ github.ref_name }}
           file_glob: true
           overwrite: true
-        permissions:
-          # For publishing artifact files to the release
-          contents: write
-          # To download GitHub Packages within action
-          repository-projects: read
+    permissions:
+      # For publishing artifact files to the release
+      contents: write
+      # To download GitHub Packages within action
+      repository-projects: read

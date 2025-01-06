@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-script:
-    runs-on: ubuntu-latest
+    runs-on: ghcr.io/r-wasm/webr:main
     
     steps:
       - uses: actions/checkout@v4

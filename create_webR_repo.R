@@ -8,10 +8,6 @@
 
 gha_dir <- file.path("/github/workspace")
 
-if (!require("withr", character.only = TRUE, quietly = TRUE)) install.packages("withr")
-
-withr::local_dir(gha_dir)
-
 install.packages("pak")
 pak::pak("r-wasm/rwasm")
 
